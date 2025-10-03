@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'article_detail_screen.dart';
 
 class EducationScreen extends StatelessWidget {
-  const EducationScreen({Key? key}) : super(key: key);
+  const EducationScreen({super.key});
 
   static const List<Map<String, String>> articles = [
     {

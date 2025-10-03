@@ -3,7 +3,7 @@ import 'package:dogfood_app/models/product.dart';
 import 'package:dogfood_app/data/products.dart';
 
 class ProductCatalogScreen extends StatefulWidget {
-  const ProductCatalogScreen({Key? key}) : super(key: key);
+  const ProductCatalogScreen({super.key});
 
   @override
   ProductCatalogScreenState createState() => ProductCatalogScreenState();

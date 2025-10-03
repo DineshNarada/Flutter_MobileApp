@@ -25,7 +25,7 @@ void main() async {
 }
 
 class DogFoodApp extends StatelessWidget {
-  const DogFoodApp({Key? key}) : super(key: key);
+  const DogFoodApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +87,7 @@ class DogFoodApp extends StatelessWidget {
 }
 
 class AuthWrapper extends StatelessWidget {
-  const AuthWrapper({Key? key}) : super(key: key);
+  const AuthWrapper({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DogBreedsScreen extends StatefulWidget {
-  const DogBreedsScreen({Key? key}) : super(key: key);
+  const DogBreedsScreen({super.key});
 
   @override
   State<DogBreedsScreen> createState() => _DogBreedsScreenState();

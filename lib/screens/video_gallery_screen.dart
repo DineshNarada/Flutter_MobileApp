@@ -3,7 +3,7 @@ import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
 
 class VideoGalleryScreen extends StatefulWidget {
-  const VideoGalleryScreen({Key? key}) : super(key: key);
+  const VideoGalleryScreen({super.key});
 
   @override
   State<VideoGalleryScreen> createState() => _VideoGalleryScreenState();
@@ -52,11 +52,10 @@ class VideoCard extends StatefulWidget {
   final List<Map<String, String>> videos;
 
   const VideoCard(
-      {Key? key,
+      {super.key,
       required this.video,
       required this.index,
-      required this.videos})
-      : super(key: key);
+      required this.videos});
 
   @override
   State<VideoCard> createState() => _VideoCardState();
@@ -145,12 +144,12 @@ class VideoPlayerScreen extends StatefulWidget {
   final VideoPlayerController controller;
 
   const VideoPlayerScreen({
-    Key? key,
+    super.key,
     required this.video,
     required this.index,
     required this.videos,
     required this.controller,
-  }) : super(key: key);
+  });
 
   @override
   State<VideoPlayerScreen> createState() => _VideoPlayerScreenState();

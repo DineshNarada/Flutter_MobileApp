@@ -4,7 +4,7 @@ import 'package:dogfood_app/services/auth_service.dart';
 import 'package:dogfood_app/utils/snackbar_helper.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   LoginScreenState createState() => LoginScreenState();
