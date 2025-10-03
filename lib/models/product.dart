@@ -6,8 +6,8 @@ class Product {
   final double price;
   final String imageUrl;
   final List<String> reviews;
-  final double rating; // Star rating from 1.0 to 5.0
-  final int ageGroup; // e.g., 0 for puppy, 1 for adult, 2 for senior
+  final double rating;
+  final int ageGroup;
 
   Product({
     required this.id,

@@ -8,7 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:dogfood_new/main.dart';
+import 'package:dogfood_app/main.dart';
 
 void main() {
   testWidgets('DogFood app smoke test', (WidgetTester tester) async {

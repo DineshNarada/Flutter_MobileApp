@@ -1,11 +1,12 @@
-import 'package:dogfood_new/models/product.dart';
+import 'package:dogfood_app/models/product.dart';
 
 final List<Product> products = [
   Product(
     id: '1',
     name: 'Adult Chicken & Vegetables',
     brand: 'Pedigree',
-    description: 'Balanced dry food with chicken and vegetables for adult dogs.',
+    description:
+        'Balanced dry food with chicken and vegetables for adult dogs.',
     price: 4500.0,
     imageUrl: 'assets/products/1.png',
     reviews: ['Great quality food', 'My dog loves the chicken flavor'],
@@ -27,7 +28,8 @@ final List<Product> products = [
     id: '3',
     name: 'Senior Chicken & Rice',
     brand: 'Golden Years',
-    description: 'Formulated for older dogs with joint support and easy digestion.',
+    description:
+        'Formulated for older dogs with joint support and easy digestion.',
     price: 3900.0,
     imageUrl: 'assets/products/3.png',
     reviews: ['Helps with joint health', 'Easy to digest'],
@@ -49,7 +51,8 @@ final List<Product> products = [
     id: '5',
     name: 'Puppy Milk & Rice',
     brand: 'Pedigree',
-    description: 'Specially designed for puppy development with calcium and protein.',
+    description:
+        'Specially designed for puppy development with calcium and protein.',
     price: 2750.0,
     imageUrl: 'assets/products/5.png',
     reviews: ['Great for development', 'Rich in calcium'],

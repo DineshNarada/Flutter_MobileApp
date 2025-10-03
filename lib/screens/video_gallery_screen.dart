@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import 'package:chewie/chewie.dart';
 
 class VideoGalleryScreen extends StatefulWidget {
   const VideoGalleryScreen({Key? key}) : super(key: key);
@@ -9,10 +10,12 @@ class VideoGalleryScreen extends StatefulWidget {
 }
 
 class _VideoGalleryScreenState extends State<VideoGalleryScreen> {
-  final List<String> videoPaths = [
-    'assets/videos/videoplayback.mp4',
-    'assets/videos/videoplayback(1).mp4',
-    'assets/videos/videoplayback(2).mp4',
+  final List<Map<String, String>> videos = [
+    {'path': 'assets/videos/videoplayback.mp4', 'title': 'Dog Video 1'},
+    {'path': 'assets/videos/videoplayback(1).mp4', 'title': 'Dog Video 2'},
+    {'path': 'assets/videos/videoplayback(2).mp4', 'title': 'Dog Video 3'},
+    {'path': 'assets/videos/History_of_dogs.mp4', 'title': 'History of Dogs'},
+    {'path': 'assets/videos/Dog_Breeds.mp4', 'title': 'Dog Breeds'},
   ];
 
   @override
@@ -32,9 +35,10 @@ class _VideoGalleryScreenState extends State<VideoGalleryScreen> {
             mainAxisSpacing: 16,
             childAspectRatio: 16 / 9,
           ),
-          itemCount: videoPaths.length,
+          itemCount: videos.length,
           itemBuilder: (context, index) {
-            return VideoCard(videoPath: videoPaths[index]);
+            return VideoCard(
+                video: videos[index], index: index, videos: videos);
           },
         ),
       ),
@@ -43,9 +47,16 @@ class _VideoGalleryScreenState extends State<VideoGalleryScreen> {
 }
 
 class VideoCard extends StatefulWidget {
-  final String videoPath;
+  final Map<String, String> video;
+  final int index;
+  final List<Map<String, String>> videos;
 
-  const VideoCard({Key? key, required this.videoPath}) : super(key: key);
+  const VideoCard(
+      {Key? key,
+      required this.video,
+      required this.index,
+      required this.videos})
+      : super(key: key);
 
   @override
   State<VideoCard> createState() => _VideoCardState();
@@ -58,7 +69,7 @@ class _VideoCardState extends State<VideoCard> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.asset(widget.videoPath)
+    _controller = VideoPlayerController.asset(widget.video['path']!)
       ..initialize().then((_) {
         setState(() {
           _isInitialized = true;
@@ -80,7 +91,9 @@ class _VideoCardState extends State<VideoCard> {
           context,
           MaterialPageRoute(
             builder: (context) => VideoPlayerScreen(
-              videoPath: widget.videoPath,
+              video: widget.video,
+              index: widget.index,
+              videos: widget.videos,
               controller: _controller,
             ),
           ),
@@ -126,12 +139,16 @@ class _VideoCardState extends State<VideoCard> {
 }
 
 class VideoPlayerScreen extends StatefulWidget {
-  final String videoPath;
+  final Map<String, String> video;
+  final int index;
+  final List<Map<String, String>> videos;
   final VideoPlayerController controller;
 
   const VideoPlayerScreen({
     Key? key,
-    required this.videoPath,
+    required this.video,
+    required this.index,
+    required this.videos,
     required this.controller,
   }) : super(key: key);
 
@@ -141,51 +158,103 @@ class VideoPlayerScreen extends StatefulWidget {
 
 class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   late VideoPlayerController _controller;
+  late ChewieController _chewieController;
 
   @override
   void initState() {
     super.initState();
     _controller = widget.controller;
-    _controller.addListener(() {
-      setState(() {});
-    });
+    _chewieController = ChewieController(
+      videoPlayerController: _controller,
+      autoPlay: true,
+      looping: false,
+      allowFullScreen: true,
+      allowMuting: true,
+      showControls: true,
+    );
   }
 
   @override
   void dispose() {
-    _controller.pause();
+    _chewieController.dispose();
+    _controller.dispose();
     super.dispose();
+  }
+
+  void _goToPreviousVideo() {
+    if (widget.index > 0) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => VideoPlayerScreen(
+            video: widget.videos[widget.index - 1],
+            index: widget.index - 1,
+            videos: widget.videos,
+            controller: VideoPlayerController.asset(
+                widget.videos[widget.index - 1]['path']!)
+              ..initialize(),
+          ),
+        ),
+      );
+    }
+  }
+
+  void _goToNextVideo() {
+    if (widget.index < widget.videos.length - 1) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => VideoPlayerScreen(
+            video: widget.videos[widget.index + 1],
+            index: widget.index + 1,
+            videos: widget.videos,
+            controller: VideoPlayerController.asset(
+                widget.videos[widget.index + 1]['path']!)
+              ..initialize(),
+          ),
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Video Player'),
+        title: Text(widget.video['title']!),
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
       ),
-      body: Center(
-        child: _controller.value.isInitialized
-            ? AspectRatio(
-                aspectRatio: _controller.value.aspectRatio,
-                child: VideoPlayer(_controller),
-              )
-            : const CircularProgressIndicator(),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            if (_controller.value.isPlaying) {
-              _controller.pause();
-            } else {
-              _controller.play();
-            }
-          });
-        },
-        child: Icon(
-          _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-        ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Center(
+              child: _controller.value.isInitialized
+                  ? Chewie(controller: _chewieController)
+                  : const CircularProgressIndicator(),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton.icon(
+                  onPressed: widget.index > 0 ? _goToPreviousVideo : null,
+                  icon: const Icon(Icons.skip_previous),
+                  label: const Text('Previous'),
+                ),
+                ElevatedButton.icon(
+                  onPressed: widget.index < widget.videos.length - 1
+                      ? _goToNextVideo
+                      : null,
+                  icon: const Icon(Icons.skip_next),
+                  label: const Text('Next'),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

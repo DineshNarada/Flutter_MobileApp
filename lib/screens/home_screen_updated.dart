@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:dogfood_new/services/auth_service.dart';
-import 'package:dogfood_new/screens/product_catalog_screen.dart';
-import 'package:dogfood_new/screens/cart_screen.dart';
-import 'package:dogfood_new/screens/profile_screen.dart';
-import 'package:dogfood_new/screens/education_screen.dart';
-import 'package:dogfood_new/screens/video_gallery_screen.dart';
-import 'package:dogfood_new/screens/dog_breeds_screen.dart';
+import 'package:dogfood_app/services/auth_service.dart';
+import 'package:dogfood_app/screens/product_catalog_screen.dart';
+import 'package:dogfood_app/screens/cart_screen.dart';
+import 'package:dogfood_app/screens/profile_screen.dart';
+import 'package:dogfood_app/screens/education_screen.dart';
+import 'package:dogfood_app/screens/video_gallery_screen.dart';
+import 'package:dogfood_app/screens/dog_breeds_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -77,7 +77,8 @@ class HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Products'),
-          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: 'Cart'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_cart), label: 'Cart'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
           BottomNavigationBarItem(icon: Icon(Icons.school), label: 'Education'),
         ],

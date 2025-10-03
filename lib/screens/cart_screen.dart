@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:dogfood_new/services/cart_service.dart';
+import 'package:dogfood_app/services/cart_service.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -26,10 +26,12 @@ class CartScreen extends StatelessWidget {
                         width: 50,
                         height: 50,
                         fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) => const Icon(Icons.broken_image),
+                        errorBuilder: (context, error, stackTrace) =>
+                            const Icon(Icons.broken_image),
                       ),
                       title: Text(item.product.name),
-                      subtitle: Text('Rs ${item.product.price.toStringAsFixed(0)}'),
+                      subtitle:
+                          Text('Rs ${item.product.price.toStringAsFixed(0)}'),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -37,7 +39,8 @@ class CartScreen extends StatelessWidget {
                             icon: const Icon(Icons.remove),
                             onPressed: () {
                               if (item.quantity > 1) {
-                                cartService.updateQuantity(item.product.id, item.quantity - 1);
+                                cartService.updateQuantity(
+                                    item.product.id, item.quantity - 1);
                               }
                             },
                           ),
@@ -45,7 +48,8 @@ class CartScreen extends StatelessWidget {
                           IconButton(
                             icon: const Icon(Icons.add),
                             onPressed: () {
-                              cartService.updateQuantity(item.product.id, item.quantity + 1);
+                              cartService.updateQuantity(
+                                  item.product.id, item.quantity + 1);
                             },
                           ),
                           IconButton(
@@ -66,7 +70,8 @@ class CartScreen extends StatelessWidget {
                   children: [
                     Text(
                       'Total: Rs ${cartService.totalPrice.toStringAsFixed(0)}',
-                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 10),
                     ElevatedButton(
@@ -75,7 +80,8 @@ class CartScreen extends StatelessWidget {
                           context: context,
                           builder: (_) => AlertDialog(
                             title: const Text('Order Placed'),
-                            content: const Text('Your order has been placed successfully!'),
+                            content: const Text(
+                                'Your order has been placed successfully!'),
                             actions: [
                               TextButton(
                                 onPressed: () {

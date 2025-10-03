@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:dogfood_new/models/cart_item.dart';
+import 'package:dogfood_app/models/cart_item.dart';
 
 class CartService with ChangeNotifier {
   final List<CartItem> _items = [];
 
   List<CartItem> get items => List.unmodifiable(_items);
 
-  double get totalPrice =>
-      _items.fold(0, (total, item) => total + item.product.price * item.quantity);
+  double get totalPrice => _items.fold(
+      0, (total, item) => total + item.product.price * item.quantity);
 
   void addItem(CartItem item) {
-    final index = _items.indexWhere((element) => element.product.id == item.product.id);
+    final index =
+        _items.indexWhere((element) => element.product.id == item.product.id);
     if (index >= 0) {
       _items[index].quantity += item.quantity;
     } else {

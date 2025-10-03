@@ -2,17 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:provider/provider.dart';
-import 'package:dogfood_new/screens/login_screen.dart';
-import 'package:dogfood_new/screens/home_screen.dart';
-import 'package:dogfood_new/services/auth_service.dart';
-import 'package:dogfood_new/services/cart_service.dart';
-import 'package:dogfood_new/services/user_profile_service.dart';
+import 'package:dogfood_app/screens/login_screen.dart';
+import 'package:dogfood_app/screens/home_screen.dart';
+import 'package:dogfood_app/screens/product_detail_screen.dart';
+import 'package:dogfood_app/models/product.dart';
+import 'package:dogfood_app/services/auth_service.dart';
+import 'package:dogfood_app/services/cart_service.dart';
+import 'package:dogfood_app/services/user_profile_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  try {
+    if (Firebase.apps.isEmpty) {
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+    }
+  } catch (e) {
+    // Firebase initialized --> continue
+  }
   runApp(const DogFoodApp());
 }
 
@@ -37,9 +45,10 @@ class DogFoodApp extends StatelessWidget {
         title: 'DogFood',
         theme: ThemeData(
           primarySwatch: Colors.blue,
-          scaffoldBackgroundColor: const Color(0xFFF5F5F5), // light grey background
-          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue).copyWith(
-            secondary: Colors.orangeAccent, // accent color for buttons etc.
+          scaffoldBackgroundColor: const Color(0xFFF5F5F5), // light grey
+          colorScheme:
+              ColorScheme.fromSwatch(primarySwatch: Colors.blue).copyWith(
+            secondary: Colors.orangeAccent, // accent color for buttons
           ),
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
@@ -62,6 +71,16 @@ class DogFoodApp extends StatelessWidget {
           ),
         ),
         home: const AuthWrapper(),
+        onGenerateRoute: (settings) {
+          if (settings.name == '/product_detail') {
+            final product = settings.arguments as Product;
+            return MaterialPageRoute(
+              builder: (context) => ProductDetailScreen(product: product),
+            );
+          }
+          // Handle other routes or return null to let Flutter handle unknown routes
+          return null;
+        },
       ),
     );
   }

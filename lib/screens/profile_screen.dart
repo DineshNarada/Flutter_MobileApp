@@ -15,13 +15,13 @@ class ProfileScreenState extends State<ProfileScreen> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _addressController = TextEditingController();
-  
+
   String _selectedPaymentMethod = 'Cash on Delivery';
   final List<String> _paymentMethods = [
     'Cash on Delivery',
     'Credit/Debit Card',
   ];
-  
+
   bool _isLoading = false;
 
   @override
@@ -39,8 +39,9 @@ class ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _loadUserProfile() {
-    final userProfileService = Provider.of<UserProfileService>(context, listen: false);
-    
+    final userProfileService =
+        Provider.of<UserProfileService>(context, listen: false);
+
     userProfileService.getUserProfile().listen((profile) {
       if (profile != null) {
         setState(() {
@@ -59,8 +60,9 @@ class ProfileScreenState extends State<ProfileScreen> {
     setState(() => _isLoading = true);
 
     try {
-      final userProfileService = Provider.of<UserProfileService>(context, listen: false);
-      
+      final userProfileService =
+          Provider.of<UserProfileService>(context, listen: false);
+
       final profile = UserProfile(
         id: userProfileService.currentUserId!,
         name: _nameController.text,
@@ -103,7 +105,7 @@ class ProfileScreenState extends State<ProfileScreen> {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 24),
-            
+
             // Name Field
             TextFormField(
               controller: _nameController,
@@ -120,7 +122,7 @@ class ProfileScreenState extends State<ProfileScreen> {
               },
             ),
             const SizedBox(height: 16),
-            
+
             // Email Field (read-only)
             TextFormField(
               controller: _emailController,
@@ -132,7 +134,7 @@ class ProfileScreenState extends State<ProfileScreen> {
               readOnly: true,
             ),
             const SizedBox(height: 16),
-            
+
             // Address Field
             TextFormField(
               controller: _addressController,
@@ -144,24 +146,33 @@ class ProfileScreenState extends State<ProfileScreen> {
               maxLines: 3,
             ),
             const SizedBox(height: 16),
-            
+
             // Payment Method Selection
             const Text(
               'Payment Method',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            ..._paymentMethods.map((method) => RadioListTile<String>(
-              title: Text(method),
-              value: method,
-              groupValue: _selectedPaymentMethod,
+            DropdownButtonFormField<String>(
+              initialValue: _selectedPaymentMethod,
+              decoration: const InputDecoration(
+                labelText: 'Payment Method',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.payment),
+              ),
+              items: _paymentMethods
+                  .map((method) => DropdownMenuItem<String>(
+                        value: method,
+                        child: Text(method),
+                      ))
+                  .toList(),
               onChanged: (value) {
                 setState(() {
                   _selectedPaymentMethod = value!;
                 });
               },
-            )).toList(),
-            
+            ),
+
             // Payment Details for Credit Card
             if (_selectedPaymentMethod == 'Credit/Debit Card') ...[
               const SizedBox(height: 16),
@@ -205,9 +216,9 @@ class ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ],
-            
+
             const SizedBox(height: 32),
-            
+
             // Save Button
             SizedBox(
               width: double.infinity,

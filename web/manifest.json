@@ -1,6 +1,6 @@
 {
-    "name": "dogfood_new",
-    "short_name": "dogfood_new",
+    "name": "dogfood_app",
+    "short_name": "dogfood_app",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

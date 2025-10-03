@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:dogfood_new/models/product.dart';
-import 'package:dogfood_new/models/cart_item.dart';
-import 'package:dogfood_new/services/cart_service.dart';
+import 'package:dogfood_app/models/product.dart';
+import 'package:dogfood_app/models/cart_item.dart';
+import 'package:dogfood_app/services/cart_service.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   final Product product;
 
-  const ProductDetailScreen({Key? key, required this.product}) : super(key: key);
+  const ProductDetailScreen({Key? key, required this.product})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,8 @@ class ProductDetailScreen extends StatelessWidget {
           children: [
             Image.asset(
               product.imageUrl,
-              errorBuilder: (context, error, stackTrace) => const Icon(Icons.broken_image),
+              errorBuilder: (context, error, stackTrace) =>
+                  const Icon(Icons.broken_image),
             ),
             const SizedBox(height: 16),
             Text(
@@ -49,15 +51,16 @@ class ProductDetailScreen extends StatelessWidget {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             ...product.reviews.map((review) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4),
-              child: Text('- $review'),
-            )),
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Text('- $review'),
+                )),
             const SizedBox(height: 32),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  final cartService = Provider.of<CartService>(context, listen: false);
+                  final cartService =
+                      Provider.of<CartService>(context, listen: false);
                   cartService.addItem(CartItem(product: product, quantity: 1));
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(

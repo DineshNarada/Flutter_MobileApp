@@ -1,4 +1,4 @@
-import 'package:dogfood_new/models/product.dart';
+import 'package:dogfood_app/models/product.dart';
 
 class CartItem {
   final Product product;

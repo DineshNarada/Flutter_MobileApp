@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:dogfood_new/models/product.dart';
-import 'package:dogfood_new/data/products.dart';
-import 'package:dogfood_new/screens/product_detail_screen.dart';
+import 'package:dogfood_app/models/product.dart';
+import 'package:dogfood_app/data/products.dart';
 
 class ProductCatalogScreen extends StatefulWidget {
   const ProductCatalogScreen({Key? key}) : super(key: key);
@@ -25,8 +24,9 @@ class ProductCatalogScreenState extends State<ProductCatalogScreen> {
     if (selectedAgeGroup != null) {
       filtered = filtered.where((p) => p.ageGroup == selectedAgeGroup).toList();
     }
-    filtered.sort((a, b) =>
-        sortByPriceAsc ? a.price.compareTo(b.price) : b.price.compareTo(a.price));
+    filtered.sort((a, b) => sortByPriceAsc
+        ? a.price.compareTo(b.price)
+        : b.price.compareTo(a.price));
 
     setState(() {
       displayedProducts = filtered;
@@ -83,7 +83,8 @@ class ProductCatalogScreenState extends State<ProductCatalogScreen> {
               ),
               const SizedBox(width: 16),
               IconButton(
-                icon: Icon(sortByPriceAsc ? Icons.arrow_upward : Icons.arrow_downward),
+                icon: Icon(
+                    sortByPriceAsc ? Icons.arrow_upward : Icons.arrow_downward),
                 onPressed: () {
                   setState(() {
                     sortByPriceAsc = !sortByPriceAsc;
@@ -97,20 +98,14 @@ class ProductCatalogScreenState extends State<ProductCatalogScreen> {
         Expanded(
           child: GridView.builder(
             padding: const EdgeInsets.all(8),
-            gridDelegate:
-                const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 0.75),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2, childAspectRatio: 0.75),
             itemCount: displayedProducts.length,
             itemBuilder: (context, index) {
               final product = displayedProducts[index];
               return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => ProductDetailScreen(product: product),
-                    ),
-                  );
-                },
+                onTap: () => Navigator.pushNamed(context, '/product_detail',
+                    arguments: product),
                 child: Card(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -119,7 +114,8 @@ class ProductCatalogScreenState extends State<ProductCatalogScreen> {
                         child: Image.asset(
                           product.imageUrl,
                           fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) => const Center(child: Icon(Icons.broken_image)),
+                          errorBuilder: (context, error, stackTrace) =>
+                              const Center(child: Icon(Icons.broken_image)),
                         ),
                       ),
                       Padding(
@@ -144,4 +140,3 @@ class ProductCatalogScreenState extends State<ProductCatalogScreen> {
     );
   }
 }
-
