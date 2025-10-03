@@ -3,8 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../models/user_profile.dart';
 
 class UserProfileService {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore;
+  final FirebaseAuth _auth;
+
+  UserProfileService([FirebaseAuth? auth, FirebaseFirestore? firestore])
+      : _auth = auth ?? FirebaseAuth.instance,
+        _firestore = firestore ?? FirebaseFirestore.instance;
 
   // Get current user ID
   String? get currentUserId => _auth.currentUser?.uid;

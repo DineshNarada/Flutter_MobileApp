@@ -7,27 +7,44 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
+import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'package:provider/provider.dart';
 
 import 'package:dogfood_app/main.dart';
-import 'package:dogfood_app/firebase_options.dart';
+import 'package:dogfood_app/services/auth_service.dart';
+import 'package:dogfood_app/services/cart_service.dart';
+import 'package:dogfood_app/services/user_profile_service.dart';
 
 void main() {
   testWidgets('DogFood app smoke test', (WidgetTester tester) async {
-    // Initialize Firebase for the test
-    WidgetsFlutterBinding.ensureInitialized();
-    try {
-      if (Firebase.apps.isEmpty) {
-        await Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform,
-        );
-      }
-    } catch (e) {
-      // Firebase initialized --> continue
-    }
+    // Use mock Firebase services for testing
+    final mockAuth = MockFirebaseAuth();
+    final fakeFirestore = FakeFirebaseFirestore();
 
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const DogFoodApp());
+    // Build our app with mocked services and trigger a frame.
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<AuthService>(
+            create: (_) => AuthService(mockAuth),
+          ),
+          ChangeNotifierProvider<CartService>(
+            create: (_) => CartService(),
+          ),
+          Provider<UserProfileService>(
+            create: (_) => UserProfileService(mockAuth, fakeFirestore),
+          ),
+        ],
+        child: MaterialApp(
+          title: 'DogFood',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: const AuthWrapper(),
+        ),
+      ),
+    );
 
     // Verify that the app loads without crashing
     expect(find.byType(MaterialApp), findsOneWidget);
