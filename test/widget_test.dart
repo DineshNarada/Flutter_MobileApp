@@ -46,6 +46,9 @@ void main() {
       ),
     );
 
+    // Wait for the StreamBuilder to resolve
+    await tester.pump();
+
     // Verify that the app loads without crashing
     expect(find.byType(MaterialApp), findsOneWidget);
   });
